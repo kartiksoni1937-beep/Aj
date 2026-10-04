@@ -69,14 +69,24 @@ public class ClickGUI extends Feature {
     public final FloatSetting colorChangePitch = new FloatSetting(Concat.of("Color Change Pitch"), 1.0f, 0.1f, 2.0f, 0.1f, o -> colorChangeEnabled.getValue());
     
 
-    //FIXME : profile loading causes this to get called. Which sets minecraft screen before mouseHandler has been created
+    // This feature is a one-shot action: it opens the screen and immediately disables itself.
+    // Its enabled state mirrors the screen state, so persisting/restoring it would re-open the
+    // GUI on the next launch, before Minecraft has a window or mouse handler, giving a black screen.
     @Override
     public void onEnable() {
+        // Ignore enables that come from profile/resource loading rather than a real keypress.
+        if (Echo.featureConfig != null && Echo.featureConfig.loading) return;
         try {
             Echo.screenManager.displayClickGUI();
-            this.setEnabled(false);
         } catch (Exception e) {
+            Echo.LOGGER.error("[ClickGUI] Failed to open the ClickGUI", e);
         }
+        this.setEnabled(false);
+    }
+
+    @Override
+    public boolean isPersistentEnabled() {
+        return false;
     }
 
     @Override

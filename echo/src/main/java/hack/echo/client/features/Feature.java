@@ -134,6 +134,16 @@ public class Feature implements Imports {
         return enabled;
     }
 
+    /**
+     * Whether this feature's enabled state is written to and restored from profiles.
+     * Transient toggles whose state is derived from something else (e.g. the ClickGUI, whose
+     * enabled state mirrors whether its screen is open) must opt out, otherwise restoring a
+     * profile re-triggers their side effects at load time.
+     */
+    public boolean isPersistentEnabled() {
+        return true;
+    }
+
     public boolean isNull() {
         return mc.player == null || mc.level == null;
     }
