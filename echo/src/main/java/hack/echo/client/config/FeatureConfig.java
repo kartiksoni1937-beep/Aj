@@ -83,7 +83,9 @@ public class FeatureConfig {
         for (Feature f : features) {
             JsonObject fObj = new JsonObject();
             fObj.addProperty("name", Concat.hash(f.getName()));
-            fObj.addProperty("enabled", f.isEnabled());
+            // Non-persistent features (e.g. ClickGUI) must never be saved as enabled, or
+            // loading the profile would re-trigger their side effects on the next launch.
+            fObj.addProperty("enabled", f.isPersistentEnabled() && f.isEnabled());
             fObj.addProperty("keybind", f.getKey());
             fObj.addProperty("vis", f.isVisible());
 
@@ -178,7 +180,8 @@ public class FeatureConfig {
                     continue;
                 }
 
-                if (fObj.has("enabled")) f.setEnabled(fObj.get("enabled").getAsBoolean());
+                if (fObj.has("enabled") && f.isPersistentEnabled())
+                    f.setEnabled(fObj.get("enabled").getAsBoolean());
                 if (fObj.has("keybind")) f.setKey(fObj.get("keybind").getAsInt());
                 if (fObj.has("vis")) f.setVisible(fObj.get("vis").getAsBoolean());
                 if (fObj.has("settings")) {

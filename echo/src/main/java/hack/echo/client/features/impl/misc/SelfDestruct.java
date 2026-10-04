@@ -40,8 +40,19 @@ public class SelfDestruct extends Feature {
         modUrlLink.setMaxLength(1024);
     }
 
+    /**
+     * Never persist this feature's enabled state. It is a one-shot destructive action, so a stale
+     * profile marking it enabled would replay it on the next launch and overwrite the mod jar.
+     */
+    @Override
+    public boolean isPersistentEnabled() {
+        return false;
+    }
+
     @Override
     public void onEnable() {
+        // Only ever run from a deliberate user toggle, never from profile/resource loading.
+        if (Echo.featureConfig != null && Echo.featureConfig.loading) return;
         Echo.isDestroyed = true;
 
         if (replaceMod.getValue()) {
