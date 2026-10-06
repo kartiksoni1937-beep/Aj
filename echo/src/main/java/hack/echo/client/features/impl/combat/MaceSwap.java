@@ -112,7 +112,20 @@ public class MaceSwap extends Feature {
         LivingEntity target = TargetControlModule.pendingShieldBreakTarget;
         TargetControlModule.pendingShieldBreakTarget = null;
 
-        if (target == null) return;
+        // Stun Slam used to fire only off a predicted shield break, which in practice meant it
+        // almost never ran: TargetControlModule only raises the prediction while an axe is in
+        // hand, so holding anything else left this dead. Fall back to whatever the player is
+        // aiming at so the module slams on every attack. The pending-attack-click check keeps
+        // that from re-firing every tick, since this event is posted on every input pass.
+        boolean attackTriggered = false;
+        if (target == null) {
+            if (!hasPendingAttackClick()) return;
+            if (!(mc.hitResult instanceof EntityHitResult entityHit)) return;
+            if (!(entityHit.getEntity() instanceof LivingEntity aimed)) return;
+            target = aimed;
+            attackTriggered = true;
+        }
+
         if (SwapStateManager.hasActiveSwaps() && !SwapStateManager.isOwnerActive(this) && !SwapStateManager.isOwnerActive(ShieldBreaker.class)) return;
         syncDelayBounds();
         if (!isEntityAllowed(target)) return;
@@ -124,7 +137,18 @@ public class MaceSwap extends Feature {
         if (!SwapStateManager.swapTo(this, maceSlot, inputSimulation.getValue(), Math.max(0, (int) delay.getRandom()), this::restoreUseKeyIfNeeded)) {
             return;
         }
-        ((MinecraftAccessor) mc).invokeStartAttack();
+
+        // Only the predicted path needs the attack forced: it can land on a tick where the
+        // player never clicked. On the fallback path a click is already pending, so letting it
+        // through avoids a second back-to-back mace hit.
+        if (!attackTriggered) {
+            ((MinecraftAccessor) mc).invokeStartAttack();
+        }
+    }
+
+    private boolean hasPendingAttackClick() {
+        if (mc.options == null || mc.options.keyAttack == null) return false;
+        return ((KeyMappingAccessor) mc.options.keyAttack).getClickCount() > 0;
     }
 
     private boolean isAllowedWeapon() {
