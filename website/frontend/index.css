@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-echo-bg text-echo-text;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  @apply bg-white/[0.03] backdrop-blur-md border border-white/5;
+}
+
+.glass-hover {
+  @apply hover:bg-white/[0.05] transition-colors duration-300;
+}

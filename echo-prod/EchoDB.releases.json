@@ -1,0 +1,192 @@
+[{
+  "_id": {
+    "$oid": "69a09e017c3f0e5ecb3c1312"
+  },
+  "version": "b0.0.1",
+  "file_url": "/api/releases/download/b0.0.1_1772133889571_EchoLoader.jar",
+  "file_name": "EchoLoader.jar",
+  "file_size": 20443822,
+  "added": [
+    "Aim Assist",
+    "Anchor Macro",
+    "Auto Crystal",
+    "AutoCart",
+    "Backtrack",
+    "Criticals",
+    "Crystal Optimizer",
+    "Double Anchor",
+    "Force Criticals",
+    "Head Bob",
+    "Hitbox Mod",
+    "Mace Swap",
+    "Piercing",
+    "Shield Breaker",
+    "Spear Lunge",
+    "Spear Reach",
+    "Totem Hit",
+    "Trigger Bot",
+    "Air Jump",
+    "Auto Walk",
+    "Combo Helper",
+    "Fast Stairs",
+    "Ghast Speed",
+    "GUI Walk",
+    "Jump Reset",
+    "Keep Sprint",
+    "Lunge Modifier",
+    "Move Fix",
+    "No Jump Delay",
+    "No Slow",
+    "No Web",
+    "Null Cancelling",
+    "Speed",
+    "Sprint",
+    "Step",
+    "Timer",
+    "VClip",
+    "Velocity",
+    "3D ESP",
+    "Aim Visualizer",
+    "Ambience",
+    "Freecam",
+    "Full Bright",
+    "Hitbox Render",
+    "Light ESP",
+    "Nametags",
+    "No Render",
+    "Search",
+    "Shader ESP",
+    "Storage ESP",
+    "Swing Speed",
+    "Target ESP",
+    "Totem Pop Chams",
+    "Trajectories",
+    "View Model",
+    "Xray",
+    "Auto Fish",
+    "Chest Stealer",
+    "Dive Bomb",
+    "Elytra Swap",
+    "Fast EXP",
+    "Fast Place",
+    "Instant Auction",
+    "Instant Crate",
+    "Key Charge",
+    "Key Pearl Macro",
+    "No Crystal Bob",
+    "Pearl Catch",
+    "Pot Refill",
+    "Shield Helper",
+    "Smart Pot",
+    "Stun Web",
+    "Totem Hand",
+    "Totem Offhand",
+    "Totem Refill",
+    "Tunneler",
+    "Attribute Mine",
+    "Auto Chestplate",
+    "Auto Respawn",
+    "Auto Tool",
+    "Easy Elytra",
+    "No Break Delay",
+    "Auto Log Out",
+    "Capes",
+    "Click GUI",
+    "Command Logger",
+    "Crosshair Optimizer",
+    "Friends",
+    "Prevent",
+    "Self Destruct",
+    "Targets",
+    "Teams",
+    "Transactions",
+    "Voxel Config"
+  ],
+  "changed": [],
+  "fixed": [],
+  "created_by": {
+    "$oid": "6937414db43486c812ff2b4c"
+  },
+  "discord_message_id": "1476661303149068512",
+  "discord_channel_id": "1426552303455965297",
+  "is_active": true,
+  "is_silent": false,
+  "createdAt": {
+    "$date": "2026-02-26T19:24:49.603Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-26T23:48:17.890Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69ac806f0fa6a330e16a3c14"
+  },
+  "version": "b0.0.2",
+  "file_url": "/api/releases/download/b0.0.2_1772912751582_EchoLoader.jar",
+  "file_name": "EchoLoader.jar",
+  "file_size": 20443822,
+  "added": [
+    "Static hitboxes",
+    "More antibot fixes",
+    "Aim Assist priority filtering",
+    "Aim Assist aim through walls",
+    "Antibot to nametags"
+  ],
+  "changed": [
+    "Removed glow esp",
+    "Removed stun web",
+    "Removed shield helper"
+  ],
+  "fixed": [
+    "Performance improvements",
+    "Improvements to \"smart pot\"",
+    "Fix unshield in trigger bot",
+    "Fix shield breaker normal mode bugs"
+  ],
+  "created_by": {
+    "$oid": "6937414db43486c812ff2b4c"
+  },
+  "discord_message_id": null,
+  "discord_channel_id": "1426552303455965297",
+  "is_active": true,
+  "is_silent": true,
+  "createdAt": {
+    "$date": "2026-03-07T19:45:51.627Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-07T19:45:51.627Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ad56760fa6a330e16a3d67"
+  },
+  "version": "b0.0.3",
+  "file_url": "/api/releases/download/b0.0.3_1772967542657_EchoLoader.jar",
+  "file_name": "EchoLoader.jar",
+  "file_size": 20443822,
+  "added": [],
+  "changed": [
+    "anchor macro changes"
+  ],
+  "fixed": [
+    "pearl catch lag"
+  ],
+  "created_by": {
+    "$oid": "6937414db43486c812ff2b4c"
+  },
+  "discord_message_id": null,
+  "discord_channel_id": "1426552303455965297",
+  "is_active": true,
+  "is_silent": true,
+  "createdAt": {
+    "$date": "2026-03-08T10:59:02.729Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-10T15:53:53.773Z"
+  },
+  "__v": 2
+}]

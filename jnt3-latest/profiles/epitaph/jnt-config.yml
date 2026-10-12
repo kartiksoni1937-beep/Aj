@@ -1,0 +1,181 @@
+input: input/epitaph.jar
+output: output/output-final.jar
+
+compiler:
+  os: linux
+  arch: x86_64
+  version: 0.15.2
+
+zig:
+  os: linux
+  arch: x86_64
+  version: 0.15.2
+  installation: /tmp/zig/zig
+
+targets:
+  - x86_64-windows
+  - x86_64-linux
+
+debug:
+  compilation:
+    - x86_64-windows
+    - x86_64-linux
+
+transpile_hit: &transpile_hit
+  - package: 'lol/epitaph/auth*'
+  - package: 'lol/epitaph/security*'
+  - package: '*'
+    classes:
+      - class: 'lol/epitaph/screens/AuthScreen'
+      - class: 'lol/epitaph/Epitaph'
+      - class: 'lol/epitaph/utils/HWID*'
+
+do_salt: &do_salt
+  - package: 'lol/epitaph/auth*'
+  - package: 'lol/epitaph/security*'
+  - package: '*'
+    classes:
+      - class: 'lol/epitaph/utils/HWID*'
+
+ep_mixin: &ep_mixin
+  - package: 'lol/epitaph/mixin*'
+  - package: 'lol/epitaph/features/scripting*'
+
+jnt-path: so/jnt
+mutators:
+  metaphor:
+    exempt: *ep_mixin
+    order:
+      - renamer.method
+      - renamer.field
+      - renamer.desc
+      - renamer.class
+      - mutilate-return
+      - splash-screen
+      - access-unify
+      - dot-graph
+      - inlining
+      - field-initialize
+      - lift-constructors
+      - internal-class-integrator
+      - unused-method-remover
+      - unused-class-remover
+      #      - main-call-check
+      #      - method-integrity
+      - string.light
+      - string.poly
+      - flow.break
+      - flow.traps
+      - flow.flattening
+      - flow.shuffle
+      - flow.switch
+      - number.salt
+      - number.table
+      - ref
+      - call-graph
+      - watermark
+      - strip
+      - optimizer
+      - dot-graph
+      - array-rewriter
+      - indy-rewriter
+    transformers:
+      mutilate-return:
+        enabled: false
+      splash-screen:
+        enabled: false
+      optimizer:
+        enabled: false
+      inlining:
+        enabled: false
+        debug: false
+        iterate: false
+        skip-transpiled-checks: false
+      field-initialize:
+        enabled: true
+      access-unify:
+        enabled: true
+        exploit: false
+      unused-method-remover:
+        enabled: false
+      unused-class-remover:
+        enabled: false
+      renamer:
+        method:
+          enabled: true
+          include: *do_salt
+        field:
+          enabled: true
+        desc:
+          enabled: true
+        class:
+          enabled: true
+      main-call-check:
+        entry: 'dev/xyz/entrypoint/EntrypointKt'
+        enabled: false
+      call-graph:
+        enabled: false
+      method-integrity:
+        enabled: false
+      string:
+        poly:
+          enabled: false
+        poly2:
+          enabled: false
+        light:
+          enabled: true
+      ref:
+        enabled: false
+        include: *transpile_hit
+      flow:
+        shuffle:
+          enabled: false
+        break:
+          enabled: false
+        traps:
+          enabled: false
+        flattening:
+          enabled: true
+        switch:
+          enabled: false
+        opaque:
+          enabled: false
+      number:
+        salt:
+          enabled: false
+          include: *do_salt
+          level: HIGH
+          skipBsm: false
+        table:
+          enabled: true
+      lift-constructors:
+        enabled: false
+      strip:
+        enabled: true
+      watermark:
+        enabled: true
+      array-rewriter:
+        enabled: true
+      indy-rewriter:
+        enabled: false
+      dot-graph:
+        enabled: false
+      exchange:
+        enabled: false
+      method-call-fix:
+        enabled: false
+  jnt:
+    include: *transpile_hit
+    order:
+      - cleanup
+      - integrate
+    transformers:
+      cleanup:
+        enabled: true
+      integrate:
+        enabled: true
+    virtualize:
+      enabled: false
+      chance: 100
+    intrinsic: false
+    traceless: false

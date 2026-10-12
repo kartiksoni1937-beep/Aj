@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group = 'hack.echo.auth'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('../Echo/versions/1.21.11/build/libs/echo-mc1.21.11-b0.0.6.jar')
+    implementation files('../EchoLoader/build/libs/echoloader-0.1.jar')
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

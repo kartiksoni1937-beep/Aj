@@ -1,0 +1,5 @@
+{
+  "name": "Echo Client",
+  "description": "Premium Minecraft Ghost Client supporting Spear and Mace modules for version 1.21.11+.",
+  "requestFramePermissions": []
+}

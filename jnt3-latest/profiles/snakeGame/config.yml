@@ -1,0 +1,212 @@
+input: 'profiles\snakeGame\SnakeGame.jar'
+output: 'profiles\snakeGame\SnakeGame-obf.jar'
+libraries: []
+
+compiler:
+  os: windows
+  arch: x86_64
+  version: 0.15.2
+
+zig:
+  os: windows
+  arch: x86_64
+  version: 0.15.2
+  installation: zig
+
+targets:
+  - x86_64-windows
+  - x86_64-linux
+  - x86_64-macos
+  - aarch64-macos
+
+debug:
+  compilation:
+    - x86_64-windows
+    - x86_64-linux
+    - x86_64-macos
+    - aarch64-macos
+
+snake_game_pkgs: &snake_game_pkgs
+  - package: "*"
+    classes:
+      - class: "Main"
+        methods:
+          - "main"
+      - class: "DataOfSquare"
+      - class: "KeyboardListener"
+      - class: "SquarePanel"
+      - class: "ThreadsController"
+      - class: "Tuple"
+      - class: "Window"
+
+snake_game_performance_sensitive: &snake_game_performance_sensitive
+  - package: "*"
+    classes:
+      - class: "ThreadsController"
+      - class: "SquarePanel"
+        methods:
+          - "paint*"
+          - "repaint*"
+      - class: "KeyboardListener"
+        methods:
+          - "keyPressed*"
+          - "keyReleased*"
+          - "keyTyped*"
+
+mutators:
+  metaphor:
+    exempt:
+      - package: '*'
+        classes:
+          - class: 'Main'
+            methods:
+              - 'main'
+    order:
+      - access-unify
+      - dot-graph
+      - inlining
+      - field-initialize
+      - lift-constructors
+      - internal-class-integrator
+      - unused-method-remover
+      - unused-class-remover
+      - string.light
+      - string.poly
+      - flow.break
+      - flow.traps
+      - flow.flattening
+      - flow.shuffle
+      - flow.switch
+      - number.salt
+      - number.table
+      - renamer.method
+      - renamer.field
+      - renamer.desc
+      - renamer.class
+      - call-graph
+      - ref
+      - watermark
+      - strip
+      - optimizer
+      - dot-graph
+      - array-rewriter
+      - indy-rewriter
+    transformers:
+      inlining:
+        enabled: false
+        iterate: false
+      lift-constructors:
+        enabled: false
+        include: *snake_game_pkgs
+      optimizer:
+        enabled: false
+      unused-method-remover:
+        enabled: false
+      unused-class-remover:
+        enabled: false
+      internal-class-integrator:
+        enabled: false
+      access-unify:
+        enabled: false
+        exploit: false
+      field-initialize:
+        enabled: true
+      ref:
+        enabled: false
+        exempt:
+          - *snake_game_performance_sensitive
+      renamer:
+        method:
+          enabled: true
+          exempt:
+            - package: '*'
+              classes:
+                - class: 'Main'
+                  methods:
+                    - 'main'
+        field:
+          enabled: true
+        desc:
+          enabled: true
+          include: *snake_game_pkgs
+        class:
+          enabled: true
+      main-call-check:
+        entry: "Main"
+        enabled: false
+      call-graph:
+        enabled: true
+        include: *snake_game_pkgs
+      method-integrity:
+        enabled: false
+      string:
+        poly:
+          enabled: false
+        light:
+          enabled: true
+          exempt: 
+            - *snake_game_performance_sensitive
+      flow:
+        flattening:
+          enabled: true
+          exempt:
+            - *snake_game_performance_sensitive
+        opaque:
+          enabled: false
+          exempt:
+            - *snake_game_performance_sensitive
+        shuffle:
+          enabled: true
+          exempt:
+            - *snake_game_performance_sensitive
+        switch:
+          enabled: false
+          include: *snake_game_pkgs
+          exempt:
+            - *snake_game_performance_sensitive
+        traps:
+          enabled: false
+        break:
+          enabled: false
+      number:
+        salt:
+          enabled: true
+          level: MEDIUM
+          include: *snake_game_pkgs
+          exempt:
+            - *snake_game_performance_sensitive
+        table:
+          enabled: false
+      watermark:
+        enabled: false
+      strip:
+        enabled: true 
+      dot-graph:
+        enabled: false
+      array-rewriter:
+        enabled: true
+        include: *snake_game_pkgs
+        exempt:
+          - *snake_game_performance_sensitive
+      indy-rewriter:
+        enabled: false
+        include: *snake_game_pkgs
+        exempt:
+          - *snake_game_performance_sensitive
+  jnt:
+    include: *snake_game_pkgs
+    exempt:
+      - *snake_game_performance_sensitive
+    order:
+      - cleanup
+      - integrate
+    transformers:
+      cleanup:
+        enabled: true
+      integrate:
+        enabled: true
+    virtualize:
+      enabled: true
+      chance: 100
+    intrinsic: true
+    traceless: false

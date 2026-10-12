@@ -1,0 +1,14 @@
+package war.jnt.core.code.analysis.invoke;
+
+public enum DirectInvokeFallbackReason {
+    INTRINSIC,
+    NOT_TRANSPILLED,
+    LIBRARY_OR_MISSING_TARGET,
+    ABSTRACT_TARGET,
+    INTERFACE_DISPATCH,
+    OPEN_VIRTUAL,
+    CROSS_CLASS_STATIC_INIT,
+    SYNCHRONIZED_CALLEE,
+    RECURSIVE_DIRECT_GRAPH,
+    FRAME_SENSITIVE
+}

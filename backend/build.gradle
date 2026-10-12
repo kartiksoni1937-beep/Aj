@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.0.0-beta5'
+}
+
+group = 'hack.echo.backend'
+version = '0.1'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.44'
+    annotationProcessor 'org.projectlombok:lombok:1.18.44'
+
+    implementation 'org.mongodb:mongodb-driver-sync:5.3.0'
+    implementation 'com.google.code.gson:gson:2.12.1'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+    implementation 'org.slf4j:slf4j-nop:2.0.17'
+
+    implementation platform('org.springframework:spring-framework-bom:7.0.2-SNAPSHOT')
+    implementation 'org.springframework.security:spring-security-crypto:7.0.2-SNAPSHOT'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-webmvc'
+    implementation 'org.springframework:spring-web'
+
+    implementation 'org.eclipse.jetty:jetty-server:12.1.6'
+    implementation 'org.eclipse.jetty.ee10:jetty-ee10-servlet:12.1.5'
+    implementation 'org.eclipse.jetty.ee10:jetty-ee10-webapp:12.1.5'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.83'
+
+    implementation 'com.bucket4j:bucket4j-core:8.10.1'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.13.0'
+    implementation 'io.jsonwebtoken:jjwt-gson:0.13.0'
+    implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+    implementation 'com.stripe:stripe-java:31.4.1'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    manifest {
+        attributes 'Main-Class': 'hack.echo.backend.Main'
+    }
+}

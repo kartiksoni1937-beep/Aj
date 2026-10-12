@@ -1,0 +1,325 @@
+input: 'C:\Users\Lund\Documents\GitHub\Echo\Echo\versions\1.21.11\build\libs\echo-mc1.21.11-b0.0.1.jar'
+output: 'C:\Users\Lund\AppData\Roaming\PrismLauncher\instances\1.21.11\minecraft\mods\echo-mc1.21.11-b0.0.1-obf.jar'
+libraries:
+  - C:\Users\Lund\Documents\echo-libs\1.21.11
+
+compiler:
+  os: windows
+  arch: x86_64
+  version: 0.15.2
+
+zig:
+  os: windows
+  arch: x86_64
+  version: 0.15.2
+  installation: zig
+
+targets:
+  - x86_64-windows
+  # - x86_64-linux
+  # - x86_64-macos
+  # - aarch64-macos
+
+debug:
+  compilation:
+    - x86_64-windows
+    # - x86_64-linux
+    # - x86_64-macos
+    # - aarch64-macos
+
+echo_pkgs: &echo_pkgs
+# anything in here must be properly cached
+  - package: "*"
+    classes:
+      - class: "hack/echo/client/Echo"
+        methods:
+          - "onInitialize*"
+      - class: "hack/echo/client/features/FeatureManager"
+      - class: "hack/echo/client/handlers/HandlerManager"
+      - class: "hack/echo/client/auth/*"
+      - class: "hack/echo/client/ui/LoginFrame"
+      - class: "hack/echo/client/render/font/Fonts"
+      - class: "hack/echo/client/handlers/RotationHandler"
+
+echo_client_classes: &echo_client_classes
+  - package: "hack/echo/client/features/impl/client/*"
+
+echo_combat_classes: &echo_combat_classes
+  - package: "hack/echo/client/features/impl/combat/*"
+
+echo_render_classes: &echo_render_classes
+  - package: "hack/echo/client/features/impl/render/*"
+
+echo_exploits_classes: &echo_exploits_classes
+  - package: "hack/echo/client/features/impl/exploits/*"
+
+echo_movement_classes: &echo_movement_classes
+  - package: "hack/echo/client/features/impl/movement/*"
+
+echo_utility_classes: &echo_utility_classes
+  - package: "hack/echo/client/features/impl/utility/*"
+
+echo_performance_sensitive: &echo_performance_sensitive
+  - package: "*"
+    classes:
+      - class: "hack/echo/client/utils/world/WorldUtils"
+      - class: "hack/echo/client/event/EventBus"
+      - class: "hack/echo/client/utils/keyboard/KeyUtils"
+      - class: "hack/echo/client/utils/RenderUtil"
+      - class: "hack/echo/client/features/impl/combat/TriggerBot"
+      - class: "hack/echo/client/handlers/InputHandler"
+      - class: "hack/echo/client/handlers/PositionHandler"
+      # - class: "hack/echo/client/handlers/RotationHandler"
+      - class: "*"
+        methods:
+          - "onTick*"
+          - "onSystemUpdate*"
+          - "onClientPlayerTick*"
+          - "onRender*"
+          - "onRender2D*"
+          - "onRender3D*"
+          - "onPlaySound*"
+          - "onShieldBreakSound*"
+          - "onSound*"
+          - "onMove*"
+          - "onMovementInput*"
+          - "onInput*"
+          - "onHandleInput*"
+          - "onSprint*"
+          - "onWalk*"
+          - "onKey*"
+          - "onPacketReceive*"
+          - "onPacketSend*"
+          - "onVelocity*"
+          - "onAttack*"
+          - "onDoAttack*"
+          - "onHotbarChange*"
+          - "onInventorySlotChange*"
+          - "onSlotClick*"
+          - "onScreenOpen*"
+          - "onScreenSet*"
+          - "tickEventListener*"
+  - package: "hack/echo/client/mixin/*"
+
+mutators:
+  metaphor:
+    exempt:
+      - package: 'hack/echo/client/mixin*'
+    order:
+      - access-unify
+      - dot-graph
+      - inlining
+      - field-initialize
+      - lift-constructors
+      - internal-class-integrator
+      - unused-method-remover
+      - unused-class-remover
+      - string.light
+      - string.poly
+      - flow.break
+      - flow.traps
+      - flow.flattening
+      - flow.shuffle
+      - flow.switch
+      - number.salt
+      - number.table
+      - renamer.method
+      - renamer.field
+      - renamer.desc
+      - renamer.class
+      - call-graph
+      - ref
+      - watermark
+      - strip
+      - optimizer
+      - dot-graph
+      - array-rewriter
+      - indy-rewriter
+    transformers:
+      inlining:
+        enabled: false
+        iterate: false
+        # apparently lift constructors are ass in FOSS version
+      lift-constructors:
+        enabled: true
+        include: *echo_pkgs
+      optimizer:
+        enabled: false
+      unused-method-remover:
+        enabled: false
+      unused-class-remover:
+        enabled: false
+      internal-class-integrator:
+        enabled: false
+      access-unify:
+        enabled: false
+        exploit: false
+      field-initialize:
+        enabled: true
+      ref:
+        enabled: false
+        exempt:
+          - package: 'hack/echo/client/mixin*'
+          - *echo_performance_sensitive
+      renamer:
+        method:
+          enabled: true
+          exempt:
+            - package: '*'
+              classes:
+                - class: '*'
+                  methods:
+                    - 'onPreLaunch'
+                    - 'onInitialize'
+                    - 'onInitializeClient'
+                    - 'getFabricId*'
+                    - 'method_*'
+                    - 'create(Ljava/lang/reflect/Method;*'
+            - package: 'hack/echo/client/mixin*'
+        field:
+        # Works with custom JRemapper
+          enabled: true
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+        desc:
+          enabled: true
+          include: *echo_pkgs
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+        class:
+          enabled: true
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+      main-call-check:
+        entry: "hack/echo/client/Echo"
+        enabled: false
+        # doesnt exist?
+      call-graph:
+        enabled: true
+        include:
+          - package: "*"
+            classes:
+              - class: "hack/echo/client/auth/AuthManager"
+                methods:
+                  - "login*"
+                  - "validateSession*"
+                  - "validateWebSocket*"
+                  - "validateUid*"
+                  - "getAuthState*"
+                  - "getAuthFingerprint*"
+                  - "getAuthFingerprintTarget*"
+                  - "obscureFingerprint*"
+              - class: "hack/echo/client/auth/FileAuth"
+              - class: "hack/echo/client/auth/EncryptionUtil"
+      method-integrity:
+        enabled: false
+        # doesnt exist?
+      string:
+        poly:
+          enabled: true
+        light:
+          enabled: true
+          exempt: 
+            - package: 'hack/echo/client/mixin*'
+            - *echo_performance_sensitive
+            - package: 'hack/echo/client/render/*'
+            - package: 'hack/echo/client/features/impl/render/*'
+      flow:
+        flattening:
+          enabled: true
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+            - *echo_performance_sensitive
+        opaque:
+          enabled: false
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+            - *echo_performance_sensitive
+        shuffle:
+          enabled: true
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+            - *echo_performance_sensitive
+        switch:
+          enabled: false
+          include: *echo_pkgs
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+            - *echo_performance_sensitive
+        traps:
+          enabled: false
+        break:
+          enabled: false
+      number:
+        salt:
+          enabled: true
+          level: MEDIUM
+          include: *echo_pkgs
+          exempt:
+            - package: 'hack/echo/client/mixin*'
+            - *echo_performance_sensitive
+            - package: 'hack/echo/client/render/*'
+            - package: 'hack/echo/client/features/impl/render/*'
+            - package: '*'
+              classes:
+                - class: '*'
+                  annotations:
+                    - 'hack/echo/client/event/EventSubscribe'
+        table:
+          enabled: false
+      watermark:
+        enabled: false
+        exempt:
+          - package: 'hack/echo/client/mixin*'
+      strip:
+        enabled: true 
+      dot-graph:
+        enabled: false
+      array-rewriter:
+        enabled: true
+        include: *echo_pkgs
+        exempt:
+          - package: 'hack/echo/client/mixin*'
+          - *echo_performance_sensitive
+          - package: 'hack/echo/client/render/*'
+          - package: 'hack/echo/client/features/impl/render/*'
+      indy-rewriter:
+        enabled: true
+        include: *echo_pkgs
+        exempt:
+          - package: 'hack/echo/client/mixin*'
+          - *echo_performance_sensitive
+          - package: 'hack/echo/client/render/*'
+          - package: 'hack/echo/client/features/impl/render/*'
+  jnt:
+    include: *echo_pkgs
+    exempt:
+      - *echo_performance_sensitive
+      - package: 'hack/echo/client/render/*'
+      - package: 'hack/echo/client/features/impl/render/*'
+      - package: '*'
+        classes:
+          - class: 'hack/echo/client/auth/CentralFeatureInfoHub'
+          # If we native mathprot in a non auth mode, rots will mess up
+          - class: 'hack/echo/client/auth/MathProt'
+          - class: 'hack/echo/client/event/EventManager'
+          - class: 'hack/echo/client/handlers/InputHandler'
+          - class: 'hack/echo/client/render/Render2DEngine'
+          - class: 'hack/echo/client/render/Shaders'
+          - class: 'hack/echo/client/render/BlurFramebuffer'
+          - class: 'hack/echo/client/render/font/*'
+          - class: 'hack/echo/client/utils/RenderUtil'
+    order:
+      - cleanup
+      - integrate
+    transformers:
+      cleanup:
+        enabled: true
+        # Cleanup with FeatureManger with no cache will drop fps by 50%+
+      integrate:
+        enabled: true
+    virtualize:
+      enabled: true
+      chance: 100
+    intrinsic: true
+    traceless: false
