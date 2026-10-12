@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "silentaim",
+  "version": "${version}",
+  "name": "Silent Aim",
+  "description": "Standalone silent-aim / aim-assist mod. Aims at the closest valid target server-side without moving your camera.",
+  "authors": [
+    "SilentAim"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.silentaim.SilentAimClient"
+    ]
+  },
+  "mixins": [
+    "silentaim.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

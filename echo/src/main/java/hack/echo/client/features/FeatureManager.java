@@ -57,7 +57,6 @@ public class FeatureManager {
 
         //Render
         features.add(new KeybindHudModule());
-        features.add(new ClickGUI());
         features.add(new Nametags());
         features.add(new AmbienceMod());
         features.add(new PlayerESP());
@@ -77,6 +76,7 @@ public class FeatureManager {
 
         //Combat
         features.add(new AimAssist());
+        features.add(new SilentAimModule());
         features.add(new ShieldBreaker());
         features.add(new TriggerBot());
         features.add(new Piercing());

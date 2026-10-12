@@ -1,0 +1,26 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.war
+*.nar
+*.ear
+*.tar.gz
+*.rar
+
+# Gradle / loom
+/.gradle
+/build
+/run
+/run/saves
+/run/logs
+/run/config
+/bin
+/.vscode
+/.idea
+
+# Keep the wrapper jar
+!gradle/wrapper/gradle-wrapper.jar
